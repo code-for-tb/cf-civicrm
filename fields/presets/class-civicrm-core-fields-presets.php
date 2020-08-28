@@ -37,7 +37,8 @@ class CiviCRM_Caldera_Forms_Core_Fields_Presets {
 		'phone_type_id' => 'phone_type_id',
 		'website_type_id' => 'website_type_id',
 		'provider_id' => 'provider_id',
-		'preferred_language' => 'preferred_language'
+		'preferred_language' => 'preferred_language',
+		'organization' => 'organization'
 	];
 
 	/**
@@ -142,7 +143,8 @@ class CiviCRM_Caldera_Forms_Core_Fields_Presets {
 		echo "<option value=\"provider_id\"{{#is auto_type value=\"provider_id\"}} selected=\"selected\"{{/is}}>" . __( 'CiviCRM - Im Type', 'cf-civicrm' ) . "</option>";
 		// Preferred Language
 		echo "<option value=\"preferred_language\"{{#is auto_type value=\"preferred_language\"}} selected=\"selected\"{{/is}}>" . __( 'CiviCRM - Preferred Language', 'cf-civicrm' ) . "</option>";
-
+		// Organization
+		echo "<option value=\"organization\"{{#is auto_type value=\"organization\"}} selected=\"selected\"{{/is}}>" . __( 'CiviCRM - Organization', 'cf-civicrm' ) . "</option>";
 	}
 
 	/**
@@ -417,6 +419,21 @@ class CiviCRM_Caldera_Forms_Core_Fields_Presets {
 								'value' => $key,
 								'label' => $value
 							];
+					}
+					break;
+				// Preferred Language
+				case 'organization':
+					$organization = civicrm_api3( 'OptionValue', 'get', [
+						'sequential' => 1,
+						'return' => ["label"],
+						'option_group_id' => 'organizations',
+					] );
+					$count = 1;
+					foreach ( $organization['values'] as $index ) {
+						$field['config']['option'][$count++] = [
+							'value' => $count,
+							'label' => $index['label']
+						];
 					}
 					break;
 			}
