@@ -421,7 +421,7 @@ class CiviCRM_Caldera_Forms_Core_Fields_Presets {
 							];
 					}
 					break;
-				// Preferred Language
+				// Organziation in Option Groups
 				case 'organization':
 					$organization = civicrm_api3( 'OptionValue', 'get', [
 						'sequential' => 1,
@@ -429,6 +429,9 @@ class CiviCRM_Caldera_Forms_Core_Fields_Presets {
 						'option_group_id' => 'organizations',
 					] );
 					$count = 1;
+					usort($organization['values'], function($a, $b) {
+						return $a['label'] <=> $b['label'];
+					});
 					foreach ( $organization['values'] as $index ) {
 						$field['config']['option'][$count++] = [
 							'value' => $count,
